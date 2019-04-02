@@ -21,6 +21,7 @@ pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f3
   let minotaur = Minotaur::new();
   let enemy = RegularEnemy::new(1.8);
   transform.set_xyz(x, y, 0.);
+  transform.set_scale(2., 2., 0.);
   
   let sprite_render = SpriteRender {
     sprite_sheet: sprite_sheet.clone(),

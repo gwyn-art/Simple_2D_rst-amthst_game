@@ -45,9 +45,9 @@ impl<'s> System<'s> for HeroMoveSystem {
           is_walking = true;
 
           if scaled_amount > 0. {
-            scale.x = 1.;
+            scale.x = scale.x.abs();
           } else if scaled_amount < 0. {
-            scale.x = -1.;
+            scale.x = scale.x.abs() * -1.;
           }
         }
 

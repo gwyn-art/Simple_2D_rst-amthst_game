@@ -84,9 +84,9 @@ impl<'s> System<'s> for RegularEnemySystem {
       
       if enemy.dir_x != 0. {
         if enemy.dir_x > 0. {
-          scale.x = -1.;
+          scale.x = scale.x.abs() * -1.;
         } else {
-          scale.x = 1.;
+          scale.x = scale.x.abs();
         }
       }
 

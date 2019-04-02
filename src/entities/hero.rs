@@ -18,7 +18,8 @@ pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Entity
   let mut transform = Transform::default();
   let hero = Hero::new();
   transform.set_xyz(500. / 2., 500. / 2., 0.);
-  
+  transform.set_scale(1.9, 1.6, 1.5);
+
   let sprite_render = SpriteRender {
     sprite_sheet: sprite_sheet.clone(),
     sprite_number: 0,
