@@ -97,7 +97,6 @@ impl<'s> System<'s> for RegularEnemySystem {
 
     // Animate enemy
     for (animation, enemy) in (&mut animations, &enemies).join() {
-      println!("Is attacking: {}", enemy.is_attacking());
       let is_moving = enemy.is_moving() ; // && (enemy.dir_x.abs() + enemy.dir_y.abs()) > 0.
       animation.change_condition_activity(
         is_moving,

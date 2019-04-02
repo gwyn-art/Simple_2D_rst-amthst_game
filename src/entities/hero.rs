@@ -5,6 +5,7 @@ use amethyst::{
     SpriteRender
   },
   core::Transform,
+  ecs::prelude::Entity,
 };
 
 use crate::components::{
@@ -13,7 +14,7 @@ use crate::components::{
   Hero
 };
 
-pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) {
+pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Entity {
   let mut transform = Transform::default();
   let hero = Hero::new();
   transform.set_xyz(500. / 2., 500. / 2., 0.);
@@ -39,5 +40,5 @@ pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) {
     .with(ComplexAnimations::new(animation, String::from("Idle")))
     .with(hero)
     .with(transform)
-    .build();
+    .build()
 }

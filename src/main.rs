@@ -16,7 +16,7 @@ mod utils;
 mod components;
 mod systems;
 
-use crate::states::Game;
+use crate::states::Menu;
 
 fn main() -> amethyst::Result<()> {
     // amethyst::start_logger(Default::default());
@@ -56,6 +56,7 @@ fn main() -> amethyst::Result<()> {
         .with(systems::animation_system::SimpleAnimationSystem, "simple_animation_system", &[])
         .with(systems::animation_system::ComplexAnimationsSystem, "complex_animation_system", &[])
         .with(systems::hero_move_system::HeroMoveSystem, "hero_move_system", &["input_system"])
+        .with(systems::menu_system::MenuSystem::default(), "menu_system", &["input_system"])
         .with(systems::hero_attack_system::HeroAttackSystem, "hero_attack_system", &["input_system"])
         .with(
             systems::hero_animation_system::HeroAnimationSystem,
@@ -68,7 +69,7 @@ fn main() -> amethyst::Result<()> {
             &["hero_move_system", "complex_animation_system"]
         );
 
-    let mut game = Application::new("./", Game, game_data)?;
+    let mut game = Application::new("./", Menu::default(), game_data)?;
 
     game.run();
 

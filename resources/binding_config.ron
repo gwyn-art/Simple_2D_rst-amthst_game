@@ -4,6 +4,8 @@
     "horizontal": Emulated(pos: Key(D), neg: Key(A)),
   },
   actions: {
-    "attack": [ [Key(Space)] ]
+    "attack": [ [Key(Space)] ],
+    "select": [ [Key(Space)] ],
+    "back_to_menu": [ [Key(Escape)]]
   },
 )

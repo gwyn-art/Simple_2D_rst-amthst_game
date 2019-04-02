@@ -16,9 +16,9 @@ pub fn create_camera(world: &mut World) {
     .with(
       Camera::from(Projection::orthographic(
         0.0,
-        500.,
+        800.,
         0.0,
-        500.
+        600.
       )))
     .with(transform)
     .build();

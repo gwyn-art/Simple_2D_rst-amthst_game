@@ -5,6 +5,7 @@ use amethyst::{
     SpriteRender
   },
   core::Transform,
+  ecs::prelude::Entity,
 };
 
 use crate::components::{
@@ -15,7 +16,7 @@ use crate::components::{
 };
 
 
-pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f32, y: f32) {
+pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f32, y: f32) -> Entity {
   let mut transform = Transform::default();
   let minotaur = Minotaur::new();
   let enemy = RegularEnemy::new(1.8);
@@ -38,5 +39,5 @@ pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f3
     .with(minotaur)
     .with(enemy)
     .with(transform)
-    .build();
+    .build()
 }
