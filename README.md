@@ -25,6 +25,7 @@ Plan for near time:
 * UI: health bars
 * Skill system to make game more advanced example
 * Add more enemies examples
+* Make colliders symmetrically changes to objects scales
 
 #### Sources that was used or can be useful 
 
