@@ -19,9 +19,9 @@ Things that are ready:
 * Regular enemy component, systems (actions decision, finding direction to hero, moving, hitting)
 * One example of regular enemy
 * UI: start menu
+* Hit register for both enemy and hero
 
 Plan for near time:
-* Hit register for both enemy and hero
 * UI: health bars
 * Skill system to make game more advanced example
 * Add more enemies examples
