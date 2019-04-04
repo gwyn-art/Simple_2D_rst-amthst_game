@@ -42,6 +42,7 @@ pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Entity
       60, 
       SimpleAnimation::new(20, 10, (hero.get_attack_time() as f32) / 10.)
     ));
+  animation.push((String::from("Dying"), 10, SimpleAnimation::new(30, 10, 0.20)));
   
   let hero = world
     .create_entity()

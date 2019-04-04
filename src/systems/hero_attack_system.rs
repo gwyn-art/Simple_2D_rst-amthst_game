@@ -39,6 +39,16 @@ impl<'s> System<'s> for HeroAttackSystem {
         if parent.entity == entity && box_collider.get_tag() == ColliderType::HeroAttack {
           box_collider.is_active = hero.is_attacking();
         }
+
+        if parent.entity != entity || box_collider.get_tag() != ColliderType::HeroBody {
+          continue;
+        }
+
+        for tag in box_collider.get_colliding_with() {
+          if tag == ColliderType::EnemyAttack {
+            hero.take_damage(25, time.absolute_real_time_seconds());
+          }
+        }
       }
     }
   }

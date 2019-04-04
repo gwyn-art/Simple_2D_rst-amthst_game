@@ -20,7 +20,7 @@ impl<'s> System<'s> for RegularEnemySystem {
     WriteStorage<'s, RegularEnemy>,
     WriteStorage<'s, Transform>,
     WriteStorage<'s, ComplexAnimations>,
-    ReadStorage<'s, BoxCollider2D>,
+    WriteStorage<'s, BoxCollider2D>,
     ReadStorage<'s, Parent>,
     ReadStorage<'s, Hero>,
     Entities<'s>,
@@ -29,7 +29,7 @@ impl<'s> System<'s> for RegularEnemySystem {
 
   fn run(
       &mut self,
-      (mut enemies, mut transform, mut animations, box_colliders, parents, heroes, entities, time): Self::SystemData
+      (mut enemies, mut transform, mut animations, mut box_colliders, parents, heroes, entities, time): Self::SystemData
     ) {
 
     for (enemy, enemy_transform) in (&mut enemies, &transform).join() {
@@ -75,9 +75,9 @@ impl<'s> System<'s> for RegularEnemySystem {
       let time_now = time.absolute_real_time_seconds();
       
       if time_now - enemy.get_past_action_time() > 2. {
-        if action > 6 {
+        if action > 5 {
           enemy.attack(time_now);
-        } else if action > 3 {
+        } else if action > 1 {
           enemy.move_to_hero(time_now);
         } else {
           enemy.stay_idle(time_now);
@@ -130,7 +130,11 @@ impl<'s> System<'s> for RegularEnemySystem {
 
     // Take Damage
     for (enemy, entity) in (&mut enemies, &entities).join() {
-      for (box_collider, parent) in (&box_colliders, &parents).join() {
+      for (box_collider, parent) in (&mut box_colliders, &parents).join() {
+        if parent.entity == entity && box_collider.get_tag() == ColliderType::EnemyAttack {
+          box_collider.is_active = enemy.is_attacking();
+        }
+        
         if parent.entity != entity || box_collider.get_tag() != ColliderType::EnemyBody {
           continue;
         }
@@ -140,6 +144,7 @@ impl<'s> System<'s> for RegularEnemySystem {
             enemy.take_damage(25, time.absolute_real_time_seconds());
           }
         }
+
       }
     }
   }

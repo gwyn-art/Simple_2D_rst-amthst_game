@@ -188,5 +188,67 @@
       width: 20,
       height: 31,
     ),
+
+
+    (
+      x: 5,
+      y: 129,
+      width: 20,
+      height: 31,
+    ),
+    (
+      x: 37,
+      y: 129,
+      width: 20,
+      height: 31,
+    ),
+    (
+      x: 69,
+      y: 129,
+      width: 20,
+      height: 31,
+    ),
+    (
+      x: 101,
+      y: 129,
+      width: 20,
+      height: 31,
+    ),
+    (
+      x: 133,
+      y: 129,
+      width: 20,
+      height: 31,
+    ),
+    (
+      x: 165,
+      y: 129,
+      width: 20,
+      height: 31,
+    ),
+    (
+      x: 197,
+      y: 129,
+      width: 20,
+      height: 31,
+    ),
+    (
+      x: 229,
+      y: 129,
+      width: 20,
+      height: 31,
+    ),
+    (
+      x: 261,
+      y: 129,
+      width: 20,
+      height: 31,
+    ),
+    (
+      x: 293,
+      y: 129,
+      width: 20,
+      height: 31,
+    ),
   ],
 )

@@ -8,10 +8,13 @@ pub struct Hero {
   health_points: i32,
   pub is_walking: bool,
   is_attacking: bool,
+  is_dying: bool,
   // Time need to spend for one attack
   attack_time: f64,
   // Time when prev attack was started
-  attack_start_time: f64
+  attack_start_time: f64,
+  // Time when prev taken damage
+  past_damage_taken_time: f64,
 }
 
 impl Hero {
@@ -19,13 +22,19 @@ impl Hero {
     Hero {
       is_walking: false,
       is_attacking: false,
+      is_dying: false,
       attack_time: 1.0,
       attack_start_time: 0.,
-      health_points: 100
+      health_points: 100,
+      past_damage_taken_time: 0.,
     }
   }
 
   pub fn set_walking(&mut self, is_walking: bool) {
+    if self.is_dying {
+      return;
+    }
+
     self.is_walking = is_walking;
   }
 
@@ -38,7 +47,7 @@ impl Hero {
   }
 
   pub fn attack(&mut self, time: f64) {
-    if time > self.attack_time + self.attack_start_time {
+    if time > self.attack_time + self.attack_start_time && !self.is_dying {
       self.attack_start_time = time;
       self.is_attacking = true;
     }
@@ -48,6 +57,35 @@ impl Hero {
     if self.attack_start_time + self.attack_time < time {
       self.is_attacking = false;
     } 
+  }
+
+  pub fn take_damage(&mut self, damage: i32, time: f64) {
+    if time - 2. > self.past_damage_taken_time {
+      self.health_points -= damage;
+      self.past_damage_taken_time = time;
+      if self.health_points <= 0 {
+        self.die();
+      }
+    }
+  }
+
+  pub fn get_health_points(&self) -> i32 {
+    self.health_points
+  }
+
+  fn stop_all_actions(&mut self) {
+    self.is_attacking = false;
+    self.is_walking = false;
+    self.is_dying = false;
+  }
+
+  pub fn die(&mut self) {
+    self.stop_all_actions();
+    self.is_dying = true;
+  }
+
+  pub fn is_dying(&self) -> bool {
+    self.is_dying
   }
 }
 
