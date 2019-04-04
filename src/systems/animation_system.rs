@@ -17,6 +17,11 @@ impl<'s> System<'s> for SimpleAnimationSystem {
 
     fn run(&mut self, (mut sprite_renders, mut animations, time): Self::SystemData) {
         for (sprite_render, animation) in (&mut sprite_renders, &mut animations).join() {
+            if !animation.is_running || 
+                ((animation.current_frame == animation.frames) && animation.stop_on_last_frame) {
+                continue;
+            }
+
             animation.elapsed_time += time.delta_seconds();
             let frame_count = (animation.elapsed_time / animation.time_per_frame) as usize % animation.frames;
             if frame_count != animation.current_frame {
@@ -61,9 +66,13 @@ impl<'s> System<'s> for ComplexAnimationsSystem {
             }
 
             // Updating animation frames
+            let stop_on_last_frame = animation.stop_on_last_frame;
+            let active_animation = animation.get_active_mut().unwrap();
+            if (active_animation.current_frame == active_animation.frames - 1) && stop_on_last_frame {
+                continue;
+            }
             let delta_time = time.delta_seconds();
-            animation.add_elapsed_time(delta_time);
-            let active_animation = animation.get_active().unwrap();
+            active_animation.elapsed_time += delta_time;
             let frame_count = (active_animation.elapsed_time / active_animation.time_per_frame) as usize % active_animation.frames;
             if frame_count != active_animation.current_frame {
                 sprite_render.sprite_number = frame_count + active_animation.start_sprite_index;

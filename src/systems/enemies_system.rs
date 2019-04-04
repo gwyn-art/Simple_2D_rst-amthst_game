@@ -1,5 +1,5 @@
-use amethyst::core::{Transform, timing::Time};
-use amethyst::ecs::{Join, Read, System, ReadStorage, WriteStorage};
+use amethyst::core::{Transform, Parent, timing::Time};
+use amethyst::ecs::{Join, Read, System, Entities, ReadStorage, WriteStorage};
 use rand::{ thread_rng, Rng};
 
 use crate::components::{
@@ -8,7 +8,9 @@ use crate::components::{
     Minotaur,
   },
   ComplexAnimations,
-  Hero
+  Hero,
+  BoxCollider2D,
+  box_collider::ColliderType
 };
 
 pub struct RegularEnemySystem;
@@ -18,11 +20,17 @@ impl<'s> System<'s> for RegularEnemySystem {
     WriteStorage<'s, RegularEnemy>,
     WriteStorage<'s, Transform>,
     WriteStorage<'s, ComplexAnimations>,
+    ReadStorage<'s, BoxCollider2D>,
+    ReadStorage<'s, Parent>,
     ReadStorage<'s, Hero>,
+    Entities<'s>,
     Read<'s, Time>,
   );
 
-  fn run(&mut self, (mut enemies, mut transform, mut animations, heroes, time): Self::SystemData) {
+  fn run(
+      &mut self,
+      (mut enemies, mut transform, mut animations, box_colliders, parents, heroes, entities, time): Self::SystemData
+    ) {
 
     for (enemy, enemy_transform) in (&mut enemies, &transform).join() {
       let mut distance_to_hero = 0.;
@@ -57,6 +65,11 @@ impl<'s> System<'s> for RegularEnemySystem {
       }
 
       // Decide what to do
+      if enemy.get_health_points() <= 0 {
+        enemy.die();
+        continue;
+      }
+
       let mut rand = thread_rng();
       let action = rand.gen_range(0, 10);
       let time_now = time.absolute_real_time_seconds();
@@ -106,6 +119,28 @@ impl<'s> System<'s> for RegularEnemySystem {
         enemy.is_attacking(),
         &String::from("Attacking")
       );
+      if enemy.is_dying() {
+        animation.stop_on_last_frame = true;
+        animation.change_condition_activity(
+          true,
+          &String::from("Dying")
+        );
+      }
+    }
+
+    // Take Damage
+    for (enemy, entity) in (&mut enemies, &entities).join() {
+      for (box_collider, parent) in (&box_colliders, &parents).join() {
+        if parent.entity != entity || box_collider.get_tag() != ColliderType::EnemyBody {
+          continue;
+        }
+
+        for tag in box_collider.get_colliding_with() {
+          if tag == ColliderType::HeroAttack {
+            enemy.take_damage(25, time.absolute_real_time_seconds());
+          }
+        }
+      }
     }
   }
 }

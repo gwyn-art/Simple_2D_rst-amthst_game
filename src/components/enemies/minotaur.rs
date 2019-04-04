@@ -3,16 +3,16 @@ use amethyst::{
 };
 
 pub struct Minotaur {
-  width: f32,
-  height: f32
+  pub health_points: i32,
+  pub attack_damage: i32
 }
 
 
 impl Minotaur {
   pub fn new () -> Minotaur {
     Minotaur {
-      width: 27.,
-      height: 34.
+      health_points: 700,
+      attack_damage: 20
     }
   }
 }

@@ -18,6 +18,8 @@ pub struct SimpleAnimation {
     pub current_frame: usize,
     pub time_per_frame: f32,
     pub elapsed_time: f32,
+    pub is_running: bool,
+    pub stop_on_last_frame: bool
 }
 
 impl SimpleAnimation {
@@ -28,6 +30,8 @@ impl SimpleAnimation {
             current_frame: 0,
             time_per_frame: time_per_frame,
             elapsed_time: 0.0,
+            is_running: true,
+            stop_on_last_frame: false,
         }
     }
 }
@@ -40,6 +44,8 @@ impl Default for SimpleAnimation {
             current_frame: 0,
             time_per_frame: 0.15,
             elapsed_time: 0.0,
+            is_running: true,
+            stop_on_last_frame: false,
         }
     }
 }
@@ -47,7 +53,8 @@ impl Default for SimpleAnimation {
 pub struct ComplexAnimations {
     animations: HashMap<String, SimpleAnimation>,
     conditions: AnimationsConditions,
-    active: Option<SimpleAnimation>
+    active: Option<SimpleAnimation>,
+    pub stop_on_last_frame: bool,
 }
 
 impl ComplexAnimations {
@@ -72,7 +79,8 @@ impl ComplexAnimations {
         ComplexAnimations {
             animations,
             active,
-            conditions
+            conditions,
+            stop_on_last_frame: false
         }
     }
 
@@ -92,9 +100,23 @@ impl ComplexAnimations {
         self.active.as_ref()
     }
 
-    // pub fn get_active_mut(&mut self) -> Option<&mut SimpleAnimation> {
-    //     self.active.as_mut()
-    // }
+    pub fn is_running(&self) -> Option<bool> {
+        match self.active {
+            Some(animation) => Some(animation.is_running),
+            None => None
+        }
+    }
+
+    pub fn set_is_running(&mut self, is_running: bool) {
+        match self.active {
+            Some(ref mut animation) => animation.is_running = is_running,
+            None => ()
+        };
+    }
+
+    pub fn get_active_mut(&mut self) -> Option<&mut SimpleAnimation> {
+        self.active.as_mut()
+    }
 
     pub fn update_active(&mut self, animation_name: &String) {
         self.active = self.animations.get(animation_name).cloned();

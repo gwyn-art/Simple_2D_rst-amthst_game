@@ -78,7 +78,6 @@ impl<'s> System<'s> for MenuSystem {
       }
     }
 
-    println!("Game current state is gamepaly: {}", game.current_state == CurrentState::Gameplay);
     // Back to Menu from a game
     if game.current_state == CurrentState::Gameplay && back_to_menu.unwrap() {
       game.user_action = Some(UserAction::OpenMenu);

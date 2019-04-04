@@ -55,6 +55,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(UiBundle::<String, String>::new())?
         .with(systems::animation_system::SimpleAnimationSystem, "simple_animation_system", &[])
         .with(systems::animation_system::ComplexAnimationsSystem, "complex_animation_system", &[])
+        .with(systems::collider_system::ColliderSystem, "collider_system", &[])
         .with(systems::hero_move_system::HeroMoveSystem, "hero_move_system", &["input_system"])
         .with(systems::menu_system::MenuSystem::default(), "menu_system", &["input_system"])
         .with(systems::hero_attack_system::HeroAttackSystem, "hero_attack_system", &["input_system"])

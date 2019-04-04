@@ -2,9 +2,10 @@ use amethyst::{
   ecs::prelude::*
 };
 
+use crate::components::BoxCollider2D;
+
 pub struct Hero {
-  width: f32,
-  height: f32,
+  health_points: i32,
   pub is_walking: bool,
   is_attacking: bool,
   // Time need to spend for one attack
@@ -16,12 +17,11 @@ pub struct Hero {
 impl Hero {
   pub fn new () -> Hero {
     Hero {
-      width: 20.,
-      height: 31.,
       is_walking: false,
       is_attacking: false,
       attack_time: 1.0,
-      attack_start_time: 0.
+      attack_start_time: 0.,
+      health_points: 100
     }
   }
 
