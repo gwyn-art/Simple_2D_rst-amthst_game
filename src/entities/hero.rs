@@ -21,7 +21,10 @@ use crate::components::{
   ColliderType
 };
 
-pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Entity {
+/*
+  Create Hero and return all entities connected to it
+*/
+pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Vec<Entity> {
   let mut transform = Transform::default();
   transform.set_xyz(500. / 2., 500. / 2., 1.);
   transform.set_scale(1.6, 1.6, 1.);
@@ -55,7 +58,7 @@ pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Entity
     .with(transform)
     .build();
 
-  world
+  let body_collider = world
     .create_entity()
     .with(body_collider)
     .with(DebugLinesComponent::new())
@@ -64,7 +67,7 @@ pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Entity
     })
     .build();
 
-  world
+  let attack_collider = world
     .create_entity()
     .with(attack_collider)
     .with(DebugLinesComponent::new())
@@ -73,5 +76,10 @@ pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Entity
     })
     .build();
 
-  return hero;
+  let mut res = Vec::new();
+  res.push(hero);
+  res.push(body_collider);
+  res.push(attack_collider);
+
+  return res;
 }

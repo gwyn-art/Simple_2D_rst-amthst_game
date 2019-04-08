@@ -50,8 +50,8 @@ impl SimpleState for GameRunning {
 
     world.add_resource(DebugLinesParams { line_width: 30. });
 
-    self.level_entities.push(create_hero(&mut world, hero_sprite_sheet));
-    self.level_entities.push(create_minotaur(&mut world, minotaur_sprite_sheet.clone(), 500. / 1.8, 500. / 1.8));
+    self.level_entities.append(&mut create_hero(&mut world, hero_sprite_sheet));
+    self.level_entities.append(&mut create_minotaur(&mut world, minotaur_sprite_sheet.clone(), 500. / 1.8, 500. / 1.8));
 
     create_camera(&mut world);
   }

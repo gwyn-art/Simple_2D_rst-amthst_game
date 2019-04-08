@@ -2,7 +2,6 @@ use amethyst::ecs::{Join, Read, Write, System, WriteStorage, Entities};
 use amethyst::input::InputHandler;
 use amethyst::ui::UiText;
 use amethyst::core::Time;
-use amethyst::Trans;
 
 use crate:: {
   components::{
@@ -79,7 +78,7 @@ impl<'s> System<'s> for MenuSystem {
     }
 
     // Back to Menu from a game
-    if game.current_state == CurrentState::Gameplay && back_to_menu.unwrap() {
+    if game.current_state == CurrentState::Gameplay && !back_to_menu.is_none() && back_to_menu.unwrap() {
       game.user_action = Some(UserAction::OpenMenu);
     }
   }

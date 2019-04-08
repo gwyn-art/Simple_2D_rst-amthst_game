@@ -23,7 +23,7 @@ use crate::components::{
 };
 
 
-pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f32, y: f32) -> Entity {
+pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f32, y: f32) -> Vec<Entity> {
   let mut transform = Transform::default();
   let minotaur = Minotaur::new();
   let enemy = RegularEnemy::new(1.8, 50);
@@ -54,7 +54,7 @@ pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f3
     .with(transform)
     .build();
 
-  world
+  let body_collider = world
     .create_entity()
     .with(body_collider)
     .with(DebugLinesComponent::new())
@@ -63,7 +63,7 @@ pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f3
     })
     .build();
 
-  world
+  let attack_collider = world
     .create_entity()
     .with(attack_collider)
     .with(DebugLinesComponent::new())
@@ -72,5 +72,10 @@ pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f3
     })
     .build();
 
-  return minotaur;
+  let mut res = Vec::new();
+  res.push(minotaur);
+  res.push(attack_collider);
+  res.push(body_collider);
+
+  return res;
 }
