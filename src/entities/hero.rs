@@ -2,7 +2,9 @@ use amethyst::{
   prelude::*,
   renderer::{
     SpriteSheetHandle,
-    SpriteRender
+    SpriteRender,
+    Transparent,
+    DebugLinesComponent
   },
   core::{
     Transform,
@@ -21,11 +23,11 @@ use crate::components::{
 
 pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Entity {
   let mut transform = Transform::default();
-  transform.set_xyz(500. / 2., 500. / 2., 0.);
+  transform.set_xyz(500. / 2., 500. / 2., 1.);
   transform.set_scale(1.6, 1.6, 1.);
 
-  let body_collider = BoxCollider2D::new(0., 0., 31. * 1.6, 20. * 1.6, ColliderType::HeroBody, true);
-  let attack_collider = BoxCollider2D::new(10. * 1.6, 15. * 1.6, 10., 15., ColliderType::HeroAttack, false);
+  let body_collider = BoxCollider2D::new(-10. * 1.6, -15. * 1.6, 18. * 1.6, 31. * 1.6, ColliderType::HeroBody, true);
+  let attack_collider = BoxCollider2D::new(0. * 1.6, -10. * 1.6, 10. * 1.6, 15. * 1.6, ColliderType::HeroAttack, false);
   let hero = Hero::new();
 
   let sprite_render = SpriteRender {
@@ -49,12 +51,14 @@ pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Entity
     .with(sprite_render)
     .with(ComplexAnimations::new(animation, String::from("Idle")))
     .with(hero)
+    .with(Transparent)
     .with(transform)
     .build();
 
   world
     .create_entity()
     .with(body_collider)
+    .with(DebugLinesComponent::new())
     .with(Parent {
       entity: hero
     })
@@ -63,6 +67,7 @@ pub fn create_hero(world: &mut World, sprite_sheet: SpriteSheetHandle) -> Entity
   world
     .create_entity()
     .with(attack_collider)
+    .with(DebugLinesComponent::new())
     .with(Parent {
       entity: hero
     })

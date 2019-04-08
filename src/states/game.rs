@@ -1,6 +1,10 @@
 use amethyst::{
   prelude::*,
-  ecs::prelude::Entity
+  ecs::prelude::Entity,
+  renderer::{
+    DebugLinesParams,
+    Transparent
+  }
 };
 
 use crate::entities::{
@@ -42,6 +46,9 @@ impl SimpleState for GameRunning {
     let minotaur_sprite_sheet = load_spritesheet(&mut world, "minotaur");
 
     world.register::<Minotaur>();
+    world.register::<Transparent>();
+
+    world.add_resource(DebugLinesParams { line_width: 30. });
 
     self.level_entities.push(create_hero(&mut world, hero_sprite_sheet));
     self.level_entities.push(create_minotaur(&mut world, minotaur_sprite_sheet.clone(), 500. / 1.8, 500. / 1.8));

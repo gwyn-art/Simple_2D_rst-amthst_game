@@ -9,7 +9,7 @@ use amethyst::{
 
 pub fn create_camera(world: &mut World) {
   let mut transform = Transform::default();
-  transform.set_z(1.0);
+  transform.set_z(15.0);
 
   world
     .create_entity()

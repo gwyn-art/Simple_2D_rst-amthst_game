@@ -2,7 +2,9 @@ use amethyst::{
   prelude::*,
   renderer::{
     SpriteSheetHandle,
-    SpriteRender
+    SpriteRender,
+    Transparent,
+    DebugLinesComponent
   },
   core::{
     Transform,
@@ -36,11 +38,11 @@ pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f3
   let mut animation: Vec<(String, i32, SimpleAnimation)> = Vec::new();
   animation.push((String::from("Idle"), 100, SimpleAnimation::new(0, 10, 0.2)));
   animation.push((String::from("Walking"), 80, SimpleAnimation::new(10, 10, 0.02)));
-  animation.push((String::from("Attacking"), 60, SimpleAnimation::new(20, 10, 0.18)));
-  animation.push((String::from("Dying"), 10, SimpleAnimation::new(30, 10, 0.18)));
+  animation.push((String::from("Attacking"), 60, SimpleAnimation::new(20, 20, 0.1)));
+  animation.push((String::from("Dying"), 10, SimpleAnimation::new(40, 10, 0.18)));
 
-  let body_collider = BoxCollider2D::new(0., 0., 41. * 2., 39. * 2., ColliderType::EnemyBody, true);
-  let attack_collider = BoxCollider2D::new(35. * 2., 0. * 1.6, 2., 40. * 2., ColliderType::EnemyAttack, false);
+  let body_collider = BoxCollider2D::new(-10. * 2., -19. * 2., 31. * 2., 39. * 2., ColliderType::EnemyBody, true);
+  let attack_collider = BoxCollider2D::new(-15. * 2., -19. * 2., 10. * 2., 39. * 2., ColliderType::EnemyAttack, false);
 
   let minotaur = world
     .create_entity()
@@ -48,12 +50,14 @@ pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f3
     .with(ComplexAnimations::new(animation, String::from("Idle")))
     .with(minotaur)
     .with(enemy)
+    .with(Transparent)
     .with(transform)
     .build();
 
   world
     .create_entity()
     .with(body_collider)
+    .with(DebugLinesComponent::new())
     .with(Parent {
       entity: minotaur
     })
@@ -62,6 +66,7 @@ pub fn create_minotaur(world: &mut World, sprite_sheet: SpriteSheetHandle, x: f3
   world
     .create_entity()
     .with(attack_collider)
+    .with(DebugLinesComponent::new())
     .with(Parent {
       entity: minotaur
     })
