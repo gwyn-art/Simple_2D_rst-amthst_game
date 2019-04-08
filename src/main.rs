@@ -5,7 +5,10 @@ use amethyst::{
     core::transform::TransformBundle,
     input::InputBundle,
     prelude::*,
-    renderer::{ALPHA, DisplayConfig, DrawFlat2D, DepthMode, ColorMask, Pipeline, RenderBundle, Stage},
+    renderer::{
+        ALPHA, DisplayConfig, DrawDebugLines, DrawFlat2D,
+        DepthMode, ColorMask, Pipeline, RenderBundle, Stage,
+        PosColorNorm},
     ui::{DrawUi, UiBundle},
     utils::application_root_dir,
 };
@@ -15,6 +18,7 @@ mod entities;
 mod utils;
 mod components;
 mod systems;
+mod build_settings;
 
 use crate::states::Menu;
 
@@ -39,10 +43,11 @@ fn main() -> amethyst::Result<()> {
                         .with_transparency(
                             ColorMask::all(),
                             ALPHA,
-                            Some(DepthMode::LessEqualWrite),
+                            None,
                     )
                 )
-                .with_pass(DrawUi::new()),
+                .with_pass(DrawUi::new())
+                .with_pass(DrawDebugLines::<PosColorNorm>::new()),
         );
 
     let game_data = GameDataBuilder::default()
