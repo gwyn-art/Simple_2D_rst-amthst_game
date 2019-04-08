@@ -19,13 +19,15 @@ Things that are ready:
 * Regular enemy component, systems (actions decision, finding direction to hero, moving, hitting)
 * One example of regular enemy
 * UI: start menu
-* Hit register for both enemy and hero
+* Colliders system to register hit
+* Draw colliders in debug mode (Done via DebugLinesComponents, it looks like it is a bit laggy but good enough)
+* Make colliders symmetrically changes to objects scales
 
-Plan for near time:
+Plan for nearest time:
 * UI: health bars
+* Add Background
 * Skill system to make game more advanced example
 * Add more enemies examples
-* Make colliders symmetrically changes to objects scales
 
 #### Sources that was used or can be useful 
 
