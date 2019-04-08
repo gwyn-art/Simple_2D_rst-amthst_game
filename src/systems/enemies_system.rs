@@ -75,7 +75,7 @@ impl<'s> System<'s> for RegularEnemySystem {
       let time_now = time.absolute_real_time_seconds();
       
       if time_now - enemy.get_past_action_time() > 2. {
-        if action > 5 {
+        if action > 5 || (distance_to_hero < 30.) && action > 1 {
           enemy.attack(time_now);
         } else if action > 1 {
           enemy.move_to_hero(time_now);
