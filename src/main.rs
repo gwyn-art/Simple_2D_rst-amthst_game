@@ -43,19 +43,20 @@ fn main() -> amethyst::Result<()> {
                         .with_transparency(
                             ColorMask::all(),
                             ALPHA,
-                            None,
-                    )
+                            Some(DepthMode::LessEqualWrite),
+                        )
                 )
                 .with_pass(DrawUi::new())
                 .with_pass(DrawDebugLines::<PosColorNorm>::new()),
         );
 
     let game_data = GameDataBuilder::default()
+        .with_bundle(TransformBundle::new())?
         .with_bundle(
         RenderBundle::new(pipe, Some(display_config))
             .with_sprite_sheet_processor()
+            .with_sprite_visibility_sorting(&["transform_system"])
         )?
-        .with_bundle(TransformBundle::new())?
         .with_bundle(input_bundle)?
         .with_bundle(UiBundle::<String, String>::new())?
         .with(systems::animation_system::SimpleAnimationSystem, "simple_animation_system", &[])

@@ -10,6 +10,7 @@ use amethyst::{
 use crate::entities::{
   create_camera,
   create_hero,
+  create_background,
   enemies::{
     create_minotaur
   }
@@ -44,14 +45,18 @@ impl SimpleState for GameRunning {
     let mut world = _data.world;
     let hero_sprite_sheet = load_spritesheet(&mut world, "hero");
     let minotaur_sprite_sheet = load_spritesheet(&mut world, "minotaur");
+    let background_sprite_sheet = load_spritesheet(&mut world, "background");
 
     world.register::<Minotaur>();
     world.register::<Transparent>();
 
-    world.add_resource(DebugLinesParams { line_width: 30. });
+    world.add_resource(DebugLinesParams { line_width: 560. });
 
+    self.level_entities.append(&mut create_background(&mut world, background_sprite_sheet));
+    self.level_entities.append(&mut create_minotaur(&mut world, minotaur_sprite_sheet.clone(), 800. / 1.8, 600. / 1.8));
+    self.level_entities.append(&mut create_minotaur(&mut world, minotaur_sprite_sheet.clone(), 800. / 2.8, 600. / 2.8));
+    self.level_entities.append(&mut create_minotaur(&mut world, minotaur_sprite_sheet.clone(), 800. / 0.8, 600. / 0.8));
     self.level_entities.append(&mut create_hero(&mut world, hero_sprite_sheet));
-    self.level_entities.append(&mut create_minotaur(&mut world, minotaur_sprite_sheet.clone(), 500. / 1.8, 500. / 1.8));
 
     create_camera(&mut world);
   }

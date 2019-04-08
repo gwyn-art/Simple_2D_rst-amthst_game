@@ -130,17 +130,17 @@ fn draw_lines(debug_lines: &mut DebugLinesComponent, x: f32, y: f32, width: f32,
   debug_lines.add_line(
         Point3::new(x, y, 10.),
         Point3::new(x + width, y,
-        10.), Rgba::GREEN);
+        10.), Rgba::RED);
   debug_lines.add_line(
         Point3::new(x + width, y, 10.),
         Point3::new(x + width, y + height,
-        10.), Rgba::GREEN);
+        10.), Rgba::RED);
   debug_lines.add_line(
         Point3::new(x, y, 10.),
         Point3::new(x, y + height,
-        10.), Rgba::GREEN);
+        10.), Rgba::RED);
   debug_lines.add_line(
         Point3::new(x, y + height, 10.),
         Point3::new(x + width, y + height,
-        10.), Rgba::GREEN);
+        10.), Rgba::RED);
 }
