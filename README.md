@@ -12,10 +12,11 @@ Then in cloned repository run command:
 cargo run
 ```
 ### Controls:
-* WS    - to navigate in main menu
-* Space - to select in menu
-* WASD  - to move hero
-* Space - to attack
+* WS      - to navigate in main menu
+* Space   - to select in main menu
+* WASD    - to move hero
+* Space   - to attack
+* Escape  - in gameplay phase to open back main menu and try again
 
 ### Current state
 Things that are ready:
