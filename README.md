@@ -13,10 +13,10 @@ cargo run
 ```
 ###
 Controls:
-WS    - to navigate in main menu
-Space - to select in menu
-WASD  - to move hero
-Space - to attack
+* WS    - to navigate in main menu
+* Space - to select in menu
+* WASD  - to move hero
+* Space - to attack
 
 ### Current state
 Things that are ready:
