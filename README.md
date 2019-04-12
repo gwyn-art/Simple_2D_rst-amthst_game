@@ -11,6 +11,12 @@ Then in cloned repository run command:
 ```
 cargo run
 ```
+###
+Controls:
+WS    - to navigate in main menu
+Space - to select in menu
+WASD  - to move hero
+Space - to attack
 
 ### Current state
 Things that are ready:
@@ -21,8 +27,10 @@ Things that are ready:
 * UI: start menu
 * Colliders system to register hit
 * Draw colliders in debug mode (Done via DebugLinesComponents, it looks like it is a bit laggy but good enough)
-* Make colliders symmetrically changes to objects scales
-* Add Arena background
+* Colliders symmetrically changes to objects scales
+* Arena background
+* Enemies spawn
+* Score system
 
 Plan for nearest time:
 * UI: health bars
@@ -33,4 +41,4 @@ Plan for nearest time:
 
 * [Rust book](https://doc.rust-lang.org/book/)
 * Amethyst [repository](https://github.com/amethyst/amethyst) | [book](https://www.amethyst.rs/book/master/) | [discord server](https://discordapp.com/invite/WzHFX3)
-* [Great 2d artist sprites of whom used in game](https://opengameart.org/users/calciumtrice) 
+* [Calciumtrice: great 2d artist sprites of whom used in game](https://opengameart.org/users/calciumtrice) 
