@@ -11,8 +11,7 @@ Then in cloned repository run command:
 ```
 cargo run
 ```
-###
-Controls:
+### Controls:
 * WS    - to navigate in main menu
 * Space - to select in menu
 * WASD  - to move hero
