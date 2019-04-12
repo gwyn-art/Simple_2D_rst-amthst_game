@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use amethyst::ecs::{Join, ReadStorage, Write, System, WriteStorage};
+use amethyst::ecs::{Join, ReadStorage, System, WriteStorage};
 use amethyst::core::{
   Parent,
   Transform

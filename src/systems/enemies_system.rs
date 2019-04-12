@@ -5,7 +5,6 @@ use rand::{ thread_rng, Rng};
 use crate::components::{
   enemies::{
     RegularEnemy,
-    Minotaur,
   },
   ComplexAnimations,
   Hero,
@@ -75,9 +74,9 @@ impl<'s> System<'s> for RegularEnemySystem {
       let time_now = time.absolute_real_time_seconds();
       
       if time_now - enemy.get_past_action_time() > 2. {
-        if action > 5 || (distance_to_hero < 30.) && action > 1 {
+        if action > 5 || (distance_to_hero < 30.) && action > 0 {
           enemy.attack(time_now);
-        } else if action > 1 {
+        } else if action > 0 {
           enemy.move_to_hero(time_now);
         } else {
           enemy.stay_idle(time_now);
@@ -128,11 +127,15 @@ impl<'s> System<'s> for RegularEnemySystem {
       }
     }
 
-    // Take Damage
+    // Attack and Take Damage
     for (enemy, entity) in (&mut enemies, &entities).join() {
       for (box_collider, parent) in (&mut box_colliders, &parents).join() {
         if parent.entity == entity && box_collider.get_tag() == ColliderType::EnemyAttack {
-          box_collider.is_active = enemy.is_attacking();
+          if time.absolute_real_time_seconds() - enemy.get_past_action_time() > 1. {
+            box_collider.is_active = enemy.is_attacking();
+          } else {
+            box_collider.is_active = false;
+          }
         }
         
         if parent.entity != entity || box_collider.get_tag() != ColliderType::EnemyBody {

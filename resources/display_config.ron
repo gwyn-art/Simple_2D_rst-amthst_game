@@ -1,5 +1,5 @@
 (
-  title: "dungeon",
+  title: "Arena",
   dimensions: Some((800, 600)),
   max_dimensions: None,
   min_dimensions: None,

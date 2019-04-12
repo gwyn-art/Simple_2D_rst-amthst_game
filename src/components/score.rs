@@ -2,10 +2,8 @@ use amethyst::{
     ecs::prelude::{Component, VecStorage},
 };
 
-pub struct MenuItem {
-  pub order: i32,
-}
+pub struct Score;
 
-impl Component for MenuItem {
+impl Component for Score {
     type Storage = VecStorage<Self>;
 }

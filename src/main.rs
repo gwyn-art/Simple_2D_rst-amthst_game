@@ -74,6 +74,16 @@ fn main() -> amethyst::Result<()> {
             systems::enemies_system::RegularEnemySystem,
             "regular_enemy_system",
             &["hero_move_system", "complex_animation_system"]
+            )
+        .with(
+            systems::enemies_spawn_system::EnemiesSpawnSystem::default(),
+            "enemies_spawn_system",
+            &["regular_enemy_system"]
+            )
+        .with(
+            systems::score_system::ScoreSystem,
+            "score_system",
+            &["regular_enemy_system"]
         );
 
     let mut game = Application::new("./", Menu::default(), game_data)?;

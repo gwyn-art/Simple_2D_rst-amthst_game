@@ -3,37 +3,47 @@ use amethyst::{
   ecs::prelude::Entity,
   renderer::{
     DebugLinesParams,
-    Transparent
+    Transparent,
+    SpriteSheetHandle
   }
 };
+use rand::{ thread_rng, Rng};
 
 use crate::entities::{
   create_camera,
   create_hero,
   create_background,
+  initialise_score,
   enemies::{
     create_minotaur
   }
 };
 
-use crate::components::Minotaur;
+use crate::components::{ 
+  Minotaur,
+  Score
+};
+
 use crate::utils::load_spritesheet;
 use crate::states::{
   Game,
   UserAction,
+  GameAction,
   CurrentState,
   Menu
 };
 
 pub struct GameRunning {
-  level_entities: Vec<Entity>
+  level_entities: Vec<Entity>,
+  enemy_sprite_sheet: Option<SpriteSheetHandle>
 }
 
 impl Default for GameRunning {
 
   fn default () -> Self {
     GameRunning {
-      level_entities: Vec::new()
+      level_entities: Vec::new(),
+      enemy_sprite_sheet: None
     }
   }
 }
@@ -47,32 +57,39 @@ impl SimpleState for GameRunning {
     let minotaur_sprite_sheet = load_spritesheet(&mut world, "minotaur");
     let background_sprite_sheet = load_spritesheet(&mut world, "background");
 
+    self.enemy_sprite_sheet = Some(minotaur_sprite_sheet.clone());
+
     world.register::<Minotaur>();
     world.register::<Transparent>();
 
-    world.add_resource(DebugLinesParams { line_width: 560. });
+    world.add_resource(DebugLinesParams { line_width: 10. });
 
     self.level_entities.append(&mut create_background(&mut world, background_sprite_sheet));
     self.level_entities.append(&mut create_minotaur(&mut world, minotaur_sprite_sheet.clone(), 800. / 1.8, 600. / 1.8));
-    self.level_entities.append(&mut create_minotaur(&mut world, minotaur_sprite_sheet.clone(), 800. / 2.8, 600. / 2.8));
-    self.level_entities.append(&mut create_minotaur(&mut world, minotaur_sprite_sheet.clone(), 800. / 0.8, 600. / 0.8));
     self.level_entities.append(&mut create_hero(&mut world, hero_sprite_sheet));
+    self.level_entities.push(initialise_score(&mut world));
 
     create_camera(&mut world);
   }
 
   fn update(&mut self, data: &mut StateData<'_, GameData<'_, '_>>) -> SimpleTrans {
-    let mut game = data.world.write_resource::<Game>();
+    let mut world = &mut data.world;
 
-    if let Some(UserAction::OpenMenu) = game.user_action.take() {
-        return Trans::Switch(Box::new(Menu::default()));
+    if let Some(UserAction::OpenMenu) = world.write_resource::<Game>().user_action.take() {
+        return Trans::Pop;
+    }
+
+    let game = world.write_resource::<Game>().game_action.take();
+    if let Some(GameAction::SpawnEnemy) = game {
+      let sprite_sheet = self.enemy_sprite_sheet.clone().unwrap();
+      let mut rand = thread_rng();
+      let x: f32 = rand.gen();
+      let y: f32 = rand.gen();
+      self.level_entities.append(&mut create_minotaur(&mut world, sprite_sheet, 800. * x, 600. * y));
+      world.write_resource::<Game>().game_action = None;
     }
 
     Trans::None
-  }
-
-  fn on_resume(&mut self, mut data: StateData<'_, GameData<'_, '_>>) {
-    data.world.write_resource::<Game>().current_state = CurrentState::Gameplay;
   }
 
   fn on_stop(&mut self, mut data: StateData<'_, GameData<'_, '_>>) {

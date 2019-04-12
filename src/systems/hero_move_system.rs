@@ -17,7 +17,7 @@ impl<'s> System<'s> for HeroMoveSystem {
 
   fn run(&mut self, (mut transform, mut heroes, input): Self::SystemData) {
     for (hero, transform) in (&mut heroes, &mut transform).join() {
-      if hero.is_attacking() || hero.is_dying() {
+      if hero.is_attacking() || hero.is_dead() {
         return;
       }
 

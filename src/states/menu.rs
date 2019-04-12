@@ -45,7 +45,7 @@ impl SimpleState for Menu {
     let mut game = data.world.write_resource::<Game>();
 
     match game.user_action.take() {
-        Some(UserAction::StartGame) => Trans::Switch(Box::new(GameRunning::default())),
+        Some(UserAction::StartGame) => Trans::Push(Box::new(GameRunning::default())),
         Some(UserAction::Quit) => {
             Trans::Quit
         },
@@ -56,12 +56,21 @@ impl SimpleState for Menu {
   fn on_resume(&mut self, mut data: StateData<'_, GameData<'_, '_>>) {
     // mark that the current state is a main menu state.
     data.world.write_resource::<Game>().current_state = CurrentState::MainMenu;
+
+    // recreate entities
+    let mut world = data.world;
+
+    let buttons = initialise_menu(&mut world, false);
+    
+    self.state_entities.push(buttons.0);
+    self.state_entities.push(buttons.1);
   }
 
-  fn on_stop(&mut self, mut data: StateData<'_, GameData<'_, '_>>) {
+  fn on_pause(&mut self, mut data: StateData<'_, GameData<'_, '_>>) {
     data
       .world
       .delete_entities(self.state_entities.as_slice())
       .expect("Failed to delete entities from level.");
+    self.state_entities = Vec::new();
   }
 }

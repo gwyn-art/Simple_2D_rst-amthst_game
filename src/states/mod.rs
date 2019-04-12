@@ -23,8 +23,14 @@ impl Default for CurrentState {
     }
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum GameAction {
+    SpawnEnemy,
+}
+
 pub struct Game {
     pub user_action: Option<UserAction>,
+    pub game_action: Option<GameAction>,
     pub current_state: CurrentState,
 }
 
@@ -32,6 +38,7 @@ impl Default for Game {
     fn default() -> Self {
         Game {
             user_action: None,
+            game_action: None,
             current_state: CurrentState::default(),
         }
     }

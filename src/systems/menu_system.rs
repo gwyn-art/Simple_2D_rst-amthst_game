@@ -33,7 +33,6 @@ impl Default for MenuSystem {
 
 impl<'s> System<'s> for MenuSystem {
   type SystemData = (
-    Entities<'s>,
     WriteStorage<'s, MenuItem>,
     WriteStorage<'s, UiText>,
     Read<'s, InputHandler<String, String>>,
@@ -41,7 +40,7 @@ impl<'s> System<'s> for MenuSystem {
     Read<'s, Time>,
   );
 
-  fn run(&mut self, (entities, mut menu_items, mut ui_texts, input, mut game, time): Self::SystemData) {
+  fn run(&mut self, (mut menu_items, mut ui_texts, input, mut game, time): Self::SystemData) {
     let active_color: [f32; 4] = [ 0.5, 0.95, 0.5, 1.];
     let default_color: [f32; 4] = [1., 1., 1., 1.];
 
@@ -55,14 +54,16 @@ impl<'s> System<'s> for MenuSystem {
     let select = input.action_is_down("select");
     let back_to_menu = input.action_is_down("back_to_menu");
 
-    // Menu changes
-    if let Some(step_value) = step {
-      self.active_menu = (self.active_menu + step_value as i32).abs() % MENU_COUNT;
-    }
+    
     
     // Menu navigation part
     if game.current_state == CurrentState::MainMenu {
-      for (e, menu_item, ui_text) in (&*entities, &mut menu_items, &mut ui_texts).join() {
+      // Menu changes
+      if let Some(step_value) = step {
+        self.active_menu = (self.active_menu + step_value as i32).abs() % MENU_COUNT;
+      }
+      
+      for (menu_item, ui_text) in (&mut menu_items, &mut ui_texts).join() {
         if menu_item.order == self.active_menu {
           ui_text.color = active_color;
         } else {

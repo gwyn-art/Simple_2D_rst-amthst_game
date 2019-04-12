@@ -19,6 +19,6 @@ impl BuildSettings {
 // As it is hard to declare complex constant I used function here
 pub fn get_build_settings () -> BuildSettings {
   BuildSettings {
-    build_mode: BuildMode::Debug
+    build_mode: BuildMode::Realise
   }
 }

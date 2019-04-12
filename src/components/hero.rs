@@ -2,13 +2,11 @@ use amethyst::{
   ecs::prelude::*
 };
 
-use crate::components::BoxCollider2D;
-
 pub struct Hero {
   health_points: i32,
   pub is_walking: bool,
   is_attacking: bool,
-  is_dying: bool,
+  is_dead: bool,
   // Time need to spend for one attack
   attack_time: f64,
   // Time when prev attack was started
@@ -22,7 +20,7 @@ impl Hero {
     Hero {
       is_walking: false,
       is_attacking: false,
-      is_dying: false,
+      is_dead: false,
       attack_time: 1.0,
       attack_start_time: 0.,
       health_points: 100,
@@ -31,7 +29,7 @@ impl Hero {
   }
 
   pub fn set_walking(&mut self, is_walking: bool) {
-    if self.is_dying {
+    if self.is_dead {
       return;
     }
 
@@ -47,7 +45,7 @@ impl Hero {
   }
 
   pub fn attack(&mut self, time: f64) {
-    if time > self.attack_time + self.attack_start_time && !self.is_dying {
+    if time > self.attack_time + self.attack_start_time && !self.is_dead {
       self.attack_start_time = time;
       self.is_attacking = true;
     }
@@ -63,6 +61,7 @@ impl Hero {
     if time - 2. > self.past_damage_taken_time {
       self.health_points -= damage;
       self.past_damage_taken_time = time;
+      println!("Hero HP: {}", self.health_points);
       if self.health_points <= 0 {
         self.die();
       }
@@ -76,16 +75,16 @@ impl Hero {
   fn stop_all_actions(&mut self) {
     self.is_attacking = false;
     self.is_walking = false;
-    self.is_dying = false;
+    self.is_dead = false;
   }
 
   pub fn die(&mut self) {
     self.stop_all_actions();
-    self.is_dying = true;
+    self.is_dead = true;
   }
 
-  pub fn is_dying(&self) -> bool {
-    self.is_dying
+  pub fn is_dead(&self) -> bool {
+    self.is_dead
   }
 }
 
