@@ -89,10 +89,14 @@ impl<'s> System<'s> for RegularEnemySystem {
     }
 
     // Move enemy
-    for (enemy, transform_enemy) in (&mut enemies, &mut transform).join() {
+    for (enemy, enemy_transform) in (&mut enemies, &mut transform).join() {
+      if enemy.is_dying() {
+        enemy_transform.set_z(-1.);
+      }
+
       if !enemy.is_moving() { continue; }
-      let (enemy_x, enemy_y) = (transform_enemy.translation().x, transform_enemy.translation().y);
-      let scale = transform_enemy.scale_mut();
+      let (enemy_x, enemy_y) = (enemy_transform.translation().x, enemy_transform.translation().y);
+      let scale = enemy_transform.scale_mut();
       
       if enemy.dir_x != 0. {
         if enemy.dir_x > 0. {
@@ -102,8 +106,8 @@ impl<'s> System<'s> for RegularEnemySystem {
         }
       }
 
-      transform_enemy.set_x(enemy_x + enemy.dir_x * enemy.speed);
-      transform_enemy.set_y(enemy_y + enemy.dir_y * enemy.speed);
+      enemy_transform.set_x(enemy_x + enemy.dir_x * enemy.speed);
+      enemy_transform.set_y(enemy_y + enemy.dir_y * enemy.speed);
       // transform_enemy.set_y(enemy_x + enemy.get_speed_y());
     }
 
@@ -140,6 +144,11 @@ impl<'s> System<'s> for RegularEnemySystem {
         
         if parent.entity != entity || box_collider.get_tag() != ColliderType::EnemyBody {
           continue;
+        }
+
+        if enemy.is_dying() && box_collider.is_active {
+          box_collider.is_active = false;
+          box_collider.change_colliding_with(Vec::new());
         }
 
         for tag in box_collider.get_colliding_with() {
